@@ -3,7 +3,6 @@ package com.mzule.log.solr.appender;
 import java.io.IOException;
 import java.util.Date;
 
-import org.apache.log4j.Appender;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Layout;
 import org.apache.log4j.spi.LoggingEvent;
@@ -13,7 +12,15 @@ import org.apache.solr.common.SolrInputDocument;
 
 import com.mzule.log.solr.util.SolrServerBuilder;
 
-public class SolrAppender extends AppenderSkeleton implements Appender {
+/**
+ * <p>
+ * Appender to write logs to solr server.
+ * </p>
+ * 
+ * @author mzule
+ * 
+ */
+public class SolrAppender extends AppenderSkeleton {
 
 	protected SolrServer solr;
 

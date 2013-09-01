@@ -2,15 +2,44 @@ package com.mzule.log.solr.appender;
 
 import org.apache.log4j.spi.OptionHandler;
 
+/**
+ * <p>
+ * Solr schema field mapping to log elements.
+ * </p>
+ * 
+ * @author mzule
+ * 
+ */
 public class Field implements OptionHandler {
 
-	protected String level;
-	protected String message;
-	protected String exceptionClass;
-	protected String stacktrace;
-	protected String tag;
-	protected String thread;
-	protected String timestamp;
+	/**
+	 * Level of log
+	 */
+	protected String level = "level";
+	/**
+	 * Message of log
+	 */
+	protected String message = "message";
+	/**
+	 * Exception class of log
+	 */
+	protected String exceptionClass = "exception_class";
+	/**
+	 * Stack trace of log
+	 */
+	protected String stacktrace = "stacktrace";
+	/**
+	 * Tag of log
+	 */
+	protected String tag = "tag";
+	/**
+	 * Thread of log
+	 */
+	protected String thread = "thread";
+	/**
+	 * Time stamp of log
+	 */
+	protected String timestamp = "timestamp";
 
 	public String getLevel() {
 		return level;
