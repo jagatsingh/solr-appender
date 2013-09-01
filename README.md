@@ -1,4 +1,4 @@
-nosql-appender
+solr-appender
 ==============
 
-nosql appenders for log4j.
+solr appenders for log4j to write logs to solr.
