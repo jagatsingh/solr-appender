@@ -56,15 +56,15 @@ public class SolrAppender extends AppenderSkeleton {
 	}
 
 	protected String formatBody(LoggingEvent event) {
-		StringBuffer sbuf = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		String[] s = event.getThrowableStrRep();
 		if (s != null) {
 			for (int j = 0; j < s.length; j++) {
-				sbuf.append(s[j]);
-				sbuf.append(Layout.LINE_SEP);
+				sb.append(s[j]);
+				sb.append(Layout.LINE_SEP);
 			}
 		}
-		return sbuf.toString();
+		return sb.toString();
 	}
 
 	public SolrServer getSolr() {
