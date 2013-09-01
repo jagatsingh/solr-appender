@@ -1,8 +1,7 @@
 package com.mzule.log.solr.appender;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.UUID;
+import java.util.Date;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.AppenderSkeleton;
@@ -10,11 +9,9 @@ import org.apache.log4j.Layout;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.CloudSolrServer;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 
-import com.mzule.log.solr.factory.SolrServerFactory;
+import com.mzule.log.solr.util.SolrServerBuilder;
 
 public class SolrAppender extends AppenderSkeleton implements Appender {
 
@@ -23,6 +20,7 @@ public class SolrAppender extends AppenderSkeleton implements Appender {
 	protected String host;
 	protected String zkHost;
 	protected String serverFactory;
+	protected Field field;
 
 	public void close() {
 	}
@@ -35,9 +33,12 @@ public class SolrAppender extends AppenderSkeleton implements Appender {
 	protected void append(LoggingEvent event) {
 		try {
 			SolrInputDocument doc = new SolrInputDocument();
-			doc.setField("id", UUID.randomUUID());
-			doc.setField("type", event.getLevel());
-			doc.setField("name", formatBody(event));
+			doc.setField(field.level, event.getLevel());
+			doc.setField(field.message, event.getMessage());
+			doc.setField(field.stacktrace, formatBody(event));
+			doc.setField(field.tag, "E3SQLI01");
+			doc.setField(field.thread, event.getThreadName());
+			doc.setField(field.timestamp, new Date(event.getTimeStamp()));
 			getSolr().add(doc);
 			getSolr().commit();
 		} catch (SolrServerException e) {
@@ -59,8 +60,23 @@ public class SolrAppender extends AppenderSkeleton implements Appender {
 		return sbuf.toString();
 	}
 
+	public SolrServer getSolr() {
+		if (solr == null) {
+			this.solr = SolrServerBuilder.build(this);
+		}
+		return solr;
+	}
+
 	public String getHost() {
 		return host;
+	}
+
+	public Field getField() {
+		return field;
+	}
+
+	public void setField(Field field) {
+		this.field = field;
 	}
 
 	public void setHost(String host) {
@@ -83,33 +99,8 @@ public class SolrAppender extends AppenderSkeleton implements Appender {
 		this.zkHost = zkHost;
 	}
 
-	public SolrServer getSolr() {
-		if (solr == null) {
-			if (host != null) {
-				// case HttpSolrServer
-				solr = new HttpSolrServer(host);
-			} else if (zkHost != null) {
-				// case CloudSolrServer
-				try {
-					solr = new CloudSolrServer(zkHost);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-			} else if (serverFactory != null) {
-				// case customer serverFactory
-				try {
-					SolrServerFactory factory = (SolrServerFactory) Class
-							.forName(serverFactory).newInstance();
-					solr = factory.getSolrServer();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return solr;
+	public void setSolr(SolrServer solr) {
+		this.solr = solr;
 	}
+
 }
