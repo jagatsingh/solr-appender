@@ -27,6 +27,7 @@ public class SolrAppender extends AppenderSkeleton {
 	protected String host;
 	protected String zkHost;
 	protected String serverFactory;
+	protected String tag;
 	protected Field field;
 
 	public void close() {
@@ -43,7 +44,7 @@ public class SolrAppender extends AppenderSkeleton {
 			doc.setField(field.level, event.getLevel());
 			doc.setField(field.message, event.getMessage());
 			doc.setField(field.stacktrace, formatBody(event));
-			doc.setField(field.tag, "E3SQLI01");
+			doc.setField(field.tag, tag);
 			doc.setField(field.thread, event.getThreadName());
 			doc.setField(field.timestamp, new Date(event.getTimeStamp()));
 			getSolr().add(doc);
@@ -108,6 +109,14 @@ public class SolrAppender extends AppenderSkeleton {
 
 	public void setSolr(SolrServer solr) {
 		this.solr = solr;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 
 }
