@@ -40,6 +40,7 @@ public class SolrAppender extends AppenderSkeleton {
 	@Override
 	protected void append(LoggingEvent event) {
 		try {
+			SolrServer solr = getSolr();
 			SolrInputDocument doc = new SolrInputDocument();
 			doc.setField(field.level, event.getLevel());
 			doc.setField(field.message, event.getMessage());
@@ -47,8 +48,8 @@ public class SolrAppender extends AppenderSkeleton {
 			doc.setField(field.tag, tag);
 			doc.setField(field.thread, event.getThreadName());
 			doc.setField(field.timestamp, new Date(event.getTimeStamp()));
-			getSolr().add(doc);
-			getSolr().commit();
+			solr.add(doc);
+			solr.commit();
 		} catch (SolrServerException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
