@@ -1,4 +1,4 @@
-package com.mzule.log.solr.factory;
+package com.mzule.log.solr.provider;
 
 import org.apache.solr.client.solrj.SolrServer;
 
@@ -10,7 +10,7 @@ import org.apache.solr.client.solrj.SolrServer;
  * @author mzule
  * 
  */
-public interface SolrServerFactory {
+public interface SolrServerProvider {
 
 	/**
 	 * <p>
