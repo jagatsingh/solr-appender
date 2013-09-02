@@ -7,7 +7,7 @@ import org.apache.solr.client.solrj.impl.CloudSolrServer;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 
 import com.mzule.log.solr.appender.SolrAppender;
-import com.mzule.log.solr.factory.SolrServerFactory;
+import com.mzule.log.solr.provider.SolrServerProvider;
 
 /**
  * <p>
@@ -50,7 +50,7 @@ public class SolrServerBuilder {
 		} else if (serverFactory != null) {
 			// case customer serverFactory
 			try {
-				SolrServerFactory factory = (SolrServerFactory) Class.forName(
+				SolrServerProvider factory = (SolrServerProvider) Class.forName(
 						serverFactory).newInstance();
 				return factory.getSolrServer();
 			} catch (InstantiationException e) {
