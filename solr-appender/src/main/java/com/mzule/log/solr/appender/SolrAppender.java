@@ -6,7 +6,7 @@ import java.util.Date;
 import org.apache.log4j.AppenderSkeleton;
 import org.apache.log4j.Layout;
 import org.apache.log4j.spi.LoggingEvent;
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 
@@ -22,7 +22,7 @@ import com.mzule.log.solr.util.SolrServerBuilder;
  */
 public class SolrAppender extends AppenderSkeleton {
 
-	protected SolrServer solr;
+	protected SolrClient solr;
 
 	protected String host;
 	protected String zkHost;
@@ -40,7 +40,7 @@ public class SolrAppender extends AppenderSkeleton {
 	@Override
 	protected void append(LoggingEvent event) {
 		try {
-			SolrServer solr = getSolr();
+			SolrClient solr = getSolr();
 			SolrInputDocument doc = new SolrInputDocument();
 			doc.setField(field.level, event.getLevel());
 			doc.setField(field.message, event.getMessage());
@@ -69,7 +69,7 @@ public class SolrAppender extends AppenderSkeleton {
 		return sb.toString();
 	}
 
-	public SolrServer getSolr() {
+	public SolrClient getSolr() {
 		if (solr == null) {
 			this.solr = SolrServerBuilder.build(this);
 		}
@@ -108,7 +108,7 @@ public class SolrAppender extends AppenderSkeleton {
 		this.zkHost = zkHost;
 	}
 
-	public void setSolr(SolrServer solr) {
+	public void setSolr(SolrClient solr) {
 		this.solr = solr;
 	}
 

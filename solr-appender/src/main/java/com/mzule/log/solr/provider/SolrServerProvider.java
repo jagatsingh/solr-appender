@@ -1,6 +1,6 @@
 package com.mzule.log.solr.provider;
 
-import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrClient;
 
 /**
  * <p>
@@ -19,6 +19,6 @@ public interface SolrServerProvider {
 	 * 
 	 * @return
 	 */
-	SolrServer getSolrServer();
+	SolrClient getSolrServer();
 
 }
